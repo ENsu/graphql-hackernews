@@ -65,6 +65,7 @@ class CreateVote(graphene.Mutation):
 class Query(graphene.ObjectType):
     links = graphene.List(LinkType, search=graphene.String(), first=graphene.Int(), skip=graphene.Int())
     votes = graphene.List(VoteType)
+    count = graphene.Int()
 
     def resolve_links(self, info, search=None, first=None, skip=None, **kwargs):
         qs = Link.objects.all()
@@ -86,6 +87,9 @@ class Query(graphene.ObjectType):
 
     def resolve_votes(self, info, **kwargs):
         return Vote.objects.all()
+
+    def resolve_count(self, info, **kwargs):
+        return Link.objects.count()
 
 # registered query for GraphQL
 class Mutation(graphene.ObjectType):
